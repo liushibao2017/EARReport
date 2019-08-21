@@ -16,8 +16,7 @@ namespace EARReport
 {
     class Program
     {
-
-        List<EaRLayoutSetting> settings = new List<EaRLayoutSetting>();
+        readonly List<EaRLayoutSetting> settings = new List<EaRLayoutSetting>();
 
 
         /// <summary>
@@ -100,8 +99,10 @@ namespace EARReport
        
         void PrepareSampleEaRLayoutSettings()
         {
-            EaRLayoutSetting asssets = new EaRLayoutSetting();
-            asssets.COALineName = "ASSETS";
+            EaRLayoutSetting asssets = new EaRLayoutSetting
+            {
+                COALineName = "ASSETS"
+            };
             Dictionary<EaRLineItemEnum, string> assetslines = new Dictionary<EaRLineItemEnum, string>
             {
                 { EaRLineItemEnum.Accounting, "Book/Market" },
@@ -110,8 +111,10 @@ namespace EARReport
             asssets.Lines = assetslines;
             settings.Add(asssets);
 
-            EaRLayoutSetting federal = new EaRLayoutSetting();
-            federal.COALineName = "Federal";
+            EaRLayoutSetting federal = new EaRLayoutSetting
+            {
+                COALineName = "Federal"
+            };
             Dictionary<EaRLineItemEnum, string> federallines = new Dictionary<EaRLineItemEnum, string>
             {
                 { EaRLineItemEnum.Balance, "Balance" },
@@ -121,8 +124,10 @@ namespace EARReport
             federal.Lines = federallines;
             settings.Add(federal);
 
-            EaRLayoutSetting loan = new EaRLayoutSetting();
-            loan.COALineName = "LOAN";
+            EaRLayoutSetting loan = new EaRLayoutSetting
+            {
+                COALineName = "LOAN"
+            };
             Dictionary<EaRLineItemEnum, string> loanlines = new Dictionary<EaRLineItemEnum, string>
             {
                 { EaRLineItemEnum.Book, "Book" },
@@ -136,8 +141,10 @@ namespace EARReport
             loan.Lines = loanlines;
             settings.Add(loan);
 
-            EaRLayoutSetting investment = new EaRLayoutSetting();
-            investment.COALineName = "INVESTMENT";
+            EaRLayoutSetting investment = new EaRLayoutSetting
+            {
+                COALineName = "INVESTMENT"
+            };
             Dictionary<EaRLineItemEnum, string> investmentlines = new Dictionary<EaRLineItemEnum, string>
             {
                 { EaRLineItemEnum.Book, "Book" },
@@ -148,16 +155,22 @@ namespace EARReport
             investment.Lines = investmentlines;
             settings.Add(investment);
 
-            EaRLayoutSetting other = new EaRLayoutSetting();
-            other.COALineName = "Other-Asset";
-            Dictionary<EaRLineItemEnum, string> otherlines = new Dictionary<EaRLineItemEnum, string>();
-            otherlines.Add(EaRLineItemEnum.Balance, "Balance");
-            otherlines.Add(EaRLineItemEnum.Interest, "Interest");
+            EaRLayoutSetting other = new EaRLayoutSetting
+            {
+                COALineName = "Other-Asset"
+            };
+            Dictionary<EaRLineItemEnum, string> otherlines = new Dictionary<EaRLineItemEnum, string>
+            {
+                { EaRLineItemEnum.Balance, "Balance" },
+                { EaRLineItemEnum.Interest, "Interest" }
+            };
             other.Lines = otherlines;
             settings.Add(other);
 
-            EaRLayoutSetting li = new EaRLayoutSetting();
-            li.COALineName = "LIABILITIES";
+            EaRLayoutSetting li = new EaRLayoutSetting
+            {
+                COALineName = "LIABILITIES"
+            };
             Dictionary<EaRLineItemEnum, string> lilines = new Dictionary<EaRLineItemEnum, string>
             {
                 { EaRLineItemEnum.Accounting, "Book/Market" },
@@ -166,8 +179,10 @@ namespace EARReport
             li.Lines = lilines;
             settings.Add(li);
 
-            EaRLayoutSetting cd = new EaRLayoutSetting();
-            cd.COALineName = "CD";
+            EaRLayoutSetting cd = new EaRLayoutSetting
+            {
+                COALineName = "CD"
+            };
             Dictionary<EaRLineItemEnum, string> cdlines = new Dictionary<EaRLineItemEnum, string>
             {
                 { EaRLineItemEnum.Balance, "Balance" },
@@ -184,7 +199,7 @@ namespace EARReport
             settings.Add(cd);
         }
 
-        static void Main(string[] args)
+        static void Main()
         {
             FileInfo newFile = new FileInfo(@"EAR.xlsx");
             if (newFile.Exists)
