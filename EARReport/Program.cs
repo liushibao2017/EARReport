@@ -100,8 +100,6 @@ namespace EARReport
        
         void PrepareSampleEaRLayoutSettings()
         {
-
-
             EaRLayoutSetting asssets = new EaRLayoutSetting();
             asssets.COALineName = "ASSETS";
             Dictionary<EaRLineItemEnum, string> assetslines = new Dictionary<EaRLineItemEnum, string>
