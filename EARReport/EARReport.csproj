@@ -78,6 +78,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="sampleeardata.xlsx" />
     <None Include="THC NII Report Template.xlsx" />
   </ItemGroup>
   <ItemGroup>

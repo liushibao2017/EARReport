@@ -17,7 +17,7 @@ namespace EARReport
     class Program
     {
         readonly List<EaRLayoutSetting> settings = new List<EaRLayoutSetting>();
-
+        int ir;//树布局类Lines的个数，树value的个数
 
         /// <summary>
         /// 读取json文件
@@ -52,7 +52,6 @@ namespace EARReport
             {
                 foreach (var v in finsim.Childs)
                 {
-                    // sht.Cells[irow, 2].Value = v.Value.Name;
                     irow = WriteCOAData(sht, v.Value, settings, irow);
                 }
             }
@@ -67,9 +66,14 @@ namespace EARReport
         /// <returns></returns>
         protected int WriteCOALines(ExcelWorksheet sht, string coaname, FinSimCOALine lines, List<EaRLayoutSetting> settings, int irow)
         {
+            // sht1year.Cells.Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            sht.Cells.Style.Border.BorderAround(ExcelBorderStyle.Thin);
             if (lines == null) return irow;
             sht.Cells[irow, 2].Value = coaname;
-
+            sht.Cells[irow, 2].Style.Font.Bold = true;//设置树的Name 字体加粗，
+            sht.Cells[21, 2].Style.Font.UnderLine = true;
+            sht.Cells[22, 2].Style.Font.UnderLine = true;
+            sht.Cells[23, 2].Style.Font.UnderLine = true;
             Dictionary<EaRLineItemEnum, string> coalines = null;
             foreach (var v in settings)
             {
@@ -81,6 +85,7 @@ namespace EARReport
             }
             if (coalines != null)
             {
+                ir = coalines.Count;
                 Dictionary<EaRLineItemEnum, string>.Enumerator en = coalines.GetEnumerator();
                 for (int j = 0; j < coalines.Count; j++)
                 {
@@ -88,7 +93,7 @@ namespace EARReport
                     {
                         sht.Cells[irow + 1 + j, 2].Value = "  " + en.Current.Value;
                     }
-                    for (int i = 0; i <= 12; i++)
+                    for (int i = 0; i <= 36; i++)
                     {
                         EaRLineItemEnum key = en.Current.Key;
                         if (key == EaRLineItemEnum.Balance)
@@ -135,8 +140,9 @@ namespace EARReport
 
                     }
                 }
+              
             }
-            return irow + 5;
+            return irow + ir + 1;
         }
         void PrepareSampleEaRLayoutSettings()
         {
@@ -238,6 +244,30 @@ namespace EARReport
             };
             cd.Lines = cdlines;
             settings.Add(cd);
+
+            EaRLayoutSetting transaction = new EaRLayoutSetting
+            {
+                COALineName = "Transaction Accounts"
+            };
+            Dictionary<EaRLineItemEnum, string> transactionlines = new Dictionary<EaRLineItemEnum, string>
+            {
+                { EaRLineItemEnum.Balance,"Balance"},
+                { EaRLineItemEnum.Interest,"Interest"},
+            };
+            transaction.Lines = transactionlines;
+            settings.Add(transaction);
+
+            EaRLayoutSetting mmdas = new EaRLayoutSetting
+            {
+                COALineName = "MMDAs"
+            };
+            Dictionary<EaRLineItemEnum, string> mmdaslines = new Dictionary<EaRLineItemEnum, string>
+            {
+                {EaRLineItemEnum.Balance,"Balance"},
+                {EaRLineItemEnum.Interest,"Interest"},
+            };
+            mmdas.Lines = mmdaslines;
+            settings.Add(mmdas);
         }
 
         static void Main()
@@ -276,26 +306,27 @@ namespace EARReport
                 //1st year projection
                 ExcelWorksheet sht1year = package.Workbook.Worksheets["1st year projection"];
                 sht1year.Cells.Style.Font.Name = "Calibri";
-                sht1year.Cells.Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.FromArgb(191, 191, 191));
+                
+                sht1year.Cells.Style.Border.BorderAround(ExcelBorderStyle.Medium);
                 Program pro = new Program();
                 FinProjection finProjection = pro.ReadFromJson("azf201906.json");
                 sht1year.Cells[7, 2].Value = "Scenario:Base Case";
                 sht1year.Cells[8, 2].Value = "ASSETS INTEREST INCOME";
                 sht1year.Cells[9, 2].Value = "LIABILITIES INTEREST COST";
                 sht1year.Cells[10, 2].Value = "NET INTEREST INCOME";
-                for (int i = 1; i <= 12; i++)
+                for (int i = 0; i <= 36; i++)
                 {
-                    sht1year.Cells[8, i + 3].Value = finProjection.TotalLines.NetIncome.InterestIncome[i];
-                    sht1year.Cells[9, i + 3].Value = finProjection.TotalLines.NetIncome.InterestCost[i];
-                    sht1year.Cells[10, i + 3].Value = finProjection.TotalLines.NetIncome.NetInterestIncome[i];
+                    sht1year.Cells[8, i + 4].Value = finProjection.TotalLines.NetIncome.InterestIncome[i];
+                    sht1year.Cells[9, i + 4].Value = finProjection.TotalLines.NetIncome.InterestCost[i];
+                    sht1year.Cells[10, i + 4].Value = finProjection.TotalLines.NetIncome.NetInterestIncome[i];
                     double dblNIC = finProjection.TotalLines.NetIncome.NonInterestExpense.Value[i];
                     double dblNII = finProjection.TotalLines.NetIncome.NonInterestIncome.Value[i];
-                    sht1year.Cells[11, i + 3].Value = dblNIC - dblNII;
-                    sht1year.Cells[12, i + 3].Value = finProjection.TotalLines.NetIncome.LoanLossProvision[i];
-                    sht1year.Cells[14, i + 3].Value = finProjection.TotalLines.NetIncome.TaxPayments[i];
-                    sht1year.Cells[15, i + 3].Value = finProjection.TotalLines.NetIncome.NI[i];
-                    sht1year.Cells[16, i + 3].Value = finProjection.TotalLines.NetIncome.DividendPayment[i];
-                    sht1year.Cells[18, i + 3].Value = finProjection.TotalLines.NetIncome.THCNetChangeUnRealizedGain[i];
+                    sht1year.Cells[11, i + 4].Value = dblNIC - dblNII;
+                    sht1year.Cells[12, i + 4].Value = finProjection.TotalLines.NetIncome.LoanLossProvision[i];
+                    sht1year.Cells[14, i + 4].Value = finProjection.TotalLines.NetIncome.TaxPayments[i];
+                    sht1year.Cells[15, i + 4].Value = finProjection.TotalLines.NetIncome.NI[i];
+                    sht1year.Cells[16, i + 4].Value = finProjection.TotalLines.NetIncome.DividendPayment[i];
+                    sht1year.Cells[18, i + 4].Value = finProjection.TotalLines.NetIncome.THCNetChangeUnRealizedGain[i];
                 }
 
                 sht1year.Cells[11, 2].Value = "Non Interest Expense(income)";
