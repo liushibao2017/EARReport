@@ -90,13 +90,54 @@ namespace EARReport
                     }
                     for (int i = 0; i <= 12; i++)
                     {
-                        sht.Cells[irow + 1 + j, i + 3].Value = lines.CashFlows[i].RemainingBalance;
+                        EaRLineItemEnum key = en.Current.Key;
+                        if (key == EaRLineItemEnum.Balance)
+                        {
+                            sht.Cells[irow + 1 + j, i + 3].Value = lines.CashFlows[i].RemainingBalance;
+                        }
+                        if (key == EaRLineItemEnum.Prepayment)
+                        {
+                            sht.Cells[irow + 1 + j, i + 3].Value = lines.CashFlows[i].Prepayment;
+                        }
+                        if (key == EaRLineItemEnum.Book)
+                        {
+                            sht.Cells[irow + 1 + j, i + 3].Value = lines.CashFlows[i].Book;
+                        }
+                        if (key == EaRLineItemEnum.Market)
+                        {
+                            sht.Cells[irow + 1 + j, i + 3].Value = lines.CashFlows[i].Market;
+                        }
+                        if (key == EaRLineItemEnum.Accounting)
+                        {
+                            sht.Cells[irow + 1 + j, i + 3].Value = lines.CashFlows[i].Accounting;
+                        }
+                        if (key == EaRLineItemEnum.Interest)
+                        {
+                            sht.Cells[irow + 1 + j, i + 3].Value = lines.CashFlows[i].InterestPayment;
+                        }
+                        if (key == EaRLineItemEnum.Loss)
+                        {
+                            sht.Cells[irow + 1 + j, i + 3].Value = lines.CashFlows[i].Loss;
+                        }
+                        if (key == EaRLineItemEnum.Recovery)
+                        {
+                            sht.Cells[irow + 1 + j, i + 3].Value = lines.CashFlows[i].Recoveried;
+                        }
+                        if (key == EaRLineItemEnum.Amortization)
+                        {
+                            sht.Cells[irow + 1 + j, i + 3].Value = lines.CashFlows[i].Amortization;
+                        }
+                        if (key == EaRLineItemEnum.Reinvested)
+                        {
+                            sht.Cells[irow + 1 + j, i + 3].Value = lines.CashFlows[i].RemainingBalance;
+
+                        }
+
                     }
                 }
             }
-            return irow + 10;
+            return irow + 5;
         }
-       
         void PrepareSampleEaRLayoutSettings()
         {
             EaRLayoutSetting asssets = new EaRLayoutSetting

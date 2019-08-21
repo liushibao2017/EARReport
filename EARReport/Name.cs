@@ -11,7 +11,7 @@ using THC.FinancialSimulation;
 namespace EARReport
 {
     
-    #region 树value枚举项
+    #region 树value 别名枚举项
     public enum EaRLineItemEnum
     {
         Balance = 1,
