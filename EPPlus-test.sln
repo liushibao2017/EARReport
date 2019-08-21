@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPPlus", "EPPlus\EPPlus.csproj", "{BF3AF923-CE98-4895-9D23-0EA3E23A546D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EARReport", "EARReport\EARReport.csproj", "{56D568E1-90FC-4D0A-AF99-7AD5962942A4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BF3AF923-CE98-4895-9D23-0EA3E23A546D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF3AF923-CE98-4895-9D23-0EA3E23A546D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF3AF923-CE98-4895-9D23-0EA3E23A546D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF3AF923-CE98-4895-9D23-0EA3E23A546D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56D568E1-90FC-4D0A-AF99-7AD5962942A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56D568E1-90FC-4D0A-AF99-7AD5962942A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56D568E1-90FC-4D0A-AF99-7AD5962942A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56D568E1-90FC-4D0A-AF99-7AD5962942A4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {32687D49-E53E-4904-B384-F56622CEB151}
+	EndGlobalSection
+EndGlobal
