@@ -79,6 +79,7 @@ namespace EARReport
             {
                 if (coaname == v.COALineName)
                 {
+                   
                     coalines = v.Lines;
                     break;
                 }
@@ -92,6 +93,10 @@ namespace EARReport
                     if (en.MoveNext())
                     {
                         sht.Cells[irow + 1 + j, 2].Value = "  " + en.Current.Value;
+                        if (coaname == "Other-Asset" && sht.Cells[irow + 1 + j, 2].Value.ToString() == "  Interest")
+                        {
+                            irow++;
+                        }
                     }
                     for (int i = 0; i <= 36; i++)
                     {
