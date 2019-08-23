@@ -18,7 +18,7 @@ namespace EARReport
     {
         readonly List<EaRLayoutSetting> settings = new List<EaRLayoutSetting>();
         int ir;//树布局类Lines的个数，树value的个数
-
+       
         /// <summary>
         /// 读取json文件
         /// </summary>
@@ -66,10 +66,12 @@ namespace EARReport
         /// <returns></returns>
         protected int WriteCOALines(ExcelWorksheet sht, string coaname, FinSimCOALine lines, List<EaRLayoutSetting> settings, int irow)
         {
+            int level = 1;
             // sht1year.Cells.Style.Border.BorderAround(ExcelBorderStyle.Medium);
             sht.Cells.Style.Border.BorderAround(ExcelBorderStyle.Thin);
             if (lines == null) return irow;
             sht.Cells[irow, 2].Value = coaname;
+           
             sht.Cells[irow, 2].Style.Font.Bold = true;//设置树的Name 字体加粗，
             sht.Cells[21, 2].Style.Font.UnderLine = true;
             sht.Cells[22, 2].Style.Font.UnderLine = true;
@@ -77,12 +79,15 @@ namespace EARReport
             Dictionary<EaRLineItemEnum, string> coalines = null;
             foreach (var v in settings)
             {
-                if (coaname == v.COALineName)
+              
+                if (coaname.ToUpper() == v.COALineName.ToUpper())
                 {
-                   
+                    
                     coalines = v.Lines;
                     break;
                 }
+               
+              sht.Row(irow).OutlineLevel = 2;//设置大纲级别
             }
             if (coalines != null)
             {
@@ -93,10 +98,17 @@ namespace EARReport
                     if (en.MoveNext())
                     {
                         sht.Cells[irow + 1 + j, 2].Value = "  " + en.Current.Value;
-                        if (coaname == "Other-Asset" && sht.Cells[irow + 1 + j, 2].Value.ToString() == "  Interest")
+                       
+                        if (sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Balance" || sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Book" ||
+                          sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Interest")
+                        {
+                            sht.Cells[irow + 1 + j, 2].Style.Font.Bold = true;
+                        }
+                        if (coaname == "Other-Asset" && sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Interest")
                         {
                             irow++;
                         }
+                        sht.Row(irow).OutlineLevel=2;//设置大纲级别
                     }
                     for (int i = 0; i <= 36; i++)
                     {
@@ -145,15 +157,18 @@ namespace EARReport
 
                     }
                 }
-              
+                //sht.Row(irow).OutlineLevel = level + 1;
+             
             }
             return irow + ir + 1;
         }
+       
+
         void PrepareSampleEaRLayoutSettings()
         {
             EaRLayoutSetting asssets = new EaRLayoutSetting
             {
-                COALineName = "ASSETS"
+                COALineName = "assets"
             };
             Dictionary<EaRLineItemEnum, string> assetslines = new Dictionary<EaRLineItemEnum, string>
             {
@@ -332,8 +347,17 @@ namespace EARReport
                     sht1year.Cells[15, i + 4].Value = finProjection.TotalLines.NetIncome.NI[i];
                     sht1year.Cells[16, i + 4].Value = finProjection.TotalLines.NetIncome.DividendPayment[i];
                     sht1year.Cells[18, i + 4].Value = finProjection.TotalLines.NetIncome.THCNetChangeUnRealizedGain[i];
-                }
 
+                    if (finProjection.TotalLines.Capital != null)
+                    {
+                        sht1year.Cells[19, i + 4].Value = finProjection.TotalLines.Capital.Equity[i]; 
+                    }
+                }
+                for (int i = 11; i < 171; i++)
+                {
+                    sht1year.Row(i).OutlineLevel = 1;
+                }
+               
                 sht1year.Cells[11, 2].Value = "Non Interest Expense(income)";
                 sht1year.Cells[12, 2].Value = "Provision of losses";
                 sht1year.Cells[13, 2].Value = "Profit before taxes";
@@ -373,14 +397,6 @@ namespace EARReport
                     sht1year.Cells[18, 2].Value = "Unrealized G/L";
 
                 }
-                using (ExcelRange range = sht1year.Cells[14, 2, 14, 15])
-                {
-                    range.Style.Font.UnderLine = true;
-                }
-                using (ExcelRange range = sht1year.Cells[18, 2, 18, 15])
-                {
-                    range.Style.Font.UnderLine = true;
-                }
                 sht1year.Cells[19, 2].Value = "Equity";
                 sht1year.Cells[19, 2].Style.Font.Name = "Calibri";
                 sht1year.Cells[19, 2].Style.Font.Bold = true;
@@ -388,6 +404,7 @@ namespace EARReport
                 sht1year.Cells[19, 2].Style.Font.Size = 11;
                 pro.PrepareSampleEaRLayoutSettings();
                 pro.WriteCOAData(sht1year, finProjection.COA, pro.settings, 21);//写入树的相关数据
+              
                 package.SaveAs(newFile);
             }
 

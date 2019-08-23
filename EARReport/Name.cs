@@ -40,6 +40,7 @@ namespace EARReport
     {
         public string COALineName { get; set; }
         public Dictionary<EaRLineItemEnum, string> Lines { get; set; }
+        public bool Bold { get; set; }
 
     } 
     #endregion
