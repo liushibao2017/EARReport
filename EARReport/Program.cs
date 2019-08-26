@@ -66,9 +66,8 @@ namespace EARReport
         /// <returns></returns>
         protected int WriteCOALines(ExcelWorksheet sht, string coaname, FinSimCOALine lines, List<EaRLayoutSetting> settings, int irow)
         {
-            int level = 1;
-            // sht1year.Cells.Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sht.Cells.Style.Border.BorderAround(ExcelBorderStyle.Thin);
+ 
+          
             if (lines == null) return irow;
             sht.Cells[irow, 2].Value = coaname;
            
@@ -86,8 +85,15 @@ namespace EARReport
                     coalines = v.Lines;
                     break;
                 }
-               
-              sht.Row(irow).OutlineLevel = 2;//设置大纲级别
+
+                if (coaname == "ASSETS" || coaname == "LIABILITIES")
+                {
+                    sht.Row(irow).OutlineLevel = 1;//设置大纲级别 
+                }
+                else
+                {
+                    sht.Row(irow).OutlineLevel = 2;
+                }
             }
             if (coalines != null)
             {
@@ -104,11 +110,22 @@ namespace EARReport
                         {
                             sht.Cells[irow + 1 + j, 2].Style.Font.Bold = true;
                         }
+                        // sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Book/Market" ||
+                        //设置大纲级别
+                        if (sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Book/Market" || sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Interests")
+                        {
+                            sht.Row(irow + 1 + j).OutlineLevel = 1;
+                        }
+                        else
+                        {
+                            sht.Row(irow + 1 + j).OutlineLevel = 2;
+                        }
+
                         if (coaname == "Other-Asset" && sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Interest")
                         {
-                            irow++;
+                            irow++;//ASSETS与LIABILITIES之间插入一行
                         }
-                        sht.Row(irow).OutlineLevel=2;//设置大纲级别
+                        //sht.Row(irow).OutlineLevel=2;//设置大纲级别
                     }
                     for (int i = 0; i <= 36; i++)
                     {
@@ -168,7 +185,8 @@ namespace EARReport
         {
             EaRLayoutSetting asssets = new EaRLayoutSetting
             {
-                COALineName = "assets"
+                 COALineName = "assets" 
+               
             };
             Dictionary<EaRLineItemEnum, string> assetslines = new Dictionary<EaRLineItemEnum, string>
             {
@@ -288,6 +306,54 @@ namespace EARReport
             };
             mmdas.Lines = mmdaslines;
             settings.Add(mmdas);
+
+            EaRLayoutSetting passbook = new EaRLayoutSetting
+            {
+                COALineName="Passbook Accounts"
+            };
+            Dictionary<EaRLineItemEnum, string> passlines = new Dictionary<EaRLineItemEnum, string>
+            {
+                {EaRLineItemEnum.Balance,"Balance" },
+                {EaRLineItemEnum.Interest,"Interest" }, 
+            };
+            passbook.Lines = passlines;
+            settings.Add(passbook);
+
+            EaRLayoutSetting bearing = new EaRLayoutSetting
+            {
+                COALineName = "Non-Interest-Bearing Account"
+            };
+            Dictionary<EaRLineItemEnum, string> bearinglines = new Dictionary<EaRLineItemEnum, string>
+            {
+                {EaRLineItemEnum.Balance,"Balance"},
+                {EaRLineItemEnum.Interest,"Interest" },
+            };
+            bearing.Lines = bearinglines;
+            settings.Add(bearing);
+
+            EaRLayoutSetting otherliability = new EaRLayoutSetting
+            {
+                COALineName="Other-Liability"
+            };
+            Dictionary<EaRLineItemEnum, string> otherliabilitylines = new Dictionary<EaRLineItemEnum, string>
+            {
+                {EaRLineItemEnum.Balance,"Balance"},
+                {EaRLineItemEnum.Interest,"Interest" },
+            };
+            otherliability.Lines = otherliabilitylines;
+            settings.Add(otherliability);
+
+            EaRLayoutSetting borrowing = new EaRLayoutSetting
+            {
+                COALineName = "Borrowing"
+            };
+            Dictionary<EaRLineItemEnum, string> borrowinglines = new Dictionary<EaRLineItemEnum, string>
+            {
+                {EaRLineItemEnum.Balance,"Balance" },
+                {EaRLineItemEnum.Interest,"Interest" },
+            };
+            borrowing.Lines = borrowinglines;
+            settings.Add(borrowing);
         }
 
         static void Main()
@@ -353,11 +419,23 @@ namespace EARReport
                         sht1year.Cells[19, i + 4].Value = finProjection.TotalLines.Capital.Equity[i]; 
                     }
                 }
-                for (int i = 11; i < 171; i++)
+                for (int i = 11; i < 22; i++)
                 {
                     sht1year.Row(i).OutlineLevel = 1;
                 }
-               
+                //for (int i = 45; i < 48; i++)
+                //{
+                //    sht1year.Row(i).OutlineLevel = 1;
+                //}
+                //for (int i = 24; i < 44; i++)
+                //{
+                //    sht1year.Row(i).OutlineLevel = 2;
+                //}
+                //for (int i = 48; i < 74; i++)
+                //{
+                //    sht1year.Row(i).OutlineLevel = 2;
+                //}
+
                 sht1year.Cells[11, 2].Value = "Non Interest Expense(income)";
                 sht1year.Cells[12, 2].Value = "Provision of losses";
                 sht1year.Cells[13, 2].Value = "Profit before taxes";
