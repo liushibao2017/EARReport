@@ -110,7 +110,7 @@ namespace EARReport
                         {
                             sht.Cells[irow + 1 + j, 2].Style.Font.Bold = true;
                         }
-                        // sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Book/Market" ||
+                       
                         //设置大纲级别
                         if (sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Book/Market" || sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Interests")
                         {
@@ -123,6 +123,7 @@ namespace EARReport
 
                         if (coaname == "Other-Asset" && sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Interest")
                         {
+                           
                             irow++;//ASSETS与LIABILITIES之间插入一行
                         }
                         //sht.Row(irow).OutlineLevel=2;//设置大纲级别
@@ -419,22 +420,11 @@ namespace EARReport
                         sht1year.Cells[19, i + 4].Value = finProjection.TotalLines.Capital.Equity[i]; 
                     }
                 }
-                for (int i = 11; i < 22; i++)
+                for (int i = 11; i < 24; i++)
                 {
                     sht1year.Row(i).OutlineLevel = 1;
                 }
-                //for (int i = 45; i < 48; i++)
-                //{
-                //    sht1year.Row(i).OutlineLevel = 1;
-                //}
-                //for (int i = 24; i < 44; i++)
-                //{
-                //    sht1year.Row(i).OutlineLevel = 2;
-                //}
-                //for (int i = 48; i < 74; i++)
-                //{
-                //    sht1year.Row(i).OutlineLevel = 2;
-                //}
+
 
                 sht1year.Cells[11, 2].Value = "Non Interest Expense(income)";
                 sht1year.Cells[12, 2].Value = "Provision of losses";
