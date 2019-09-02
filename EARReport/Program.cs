@@ -11,6 +11,7 @@ using THC.FinancialSimulation;
 using System.Drawing;
 using OfficeOpenXml.Style;
 using Newtonsoft.Json;
+using OfficeOpenXml.Drawing.Chart;
 
 namespace EARReport
 {
@@ -121,11 +122,11 @@ namespace EARReport
                             sht.Row(irow + 1 + j).OutlineLevel = 2;
                         }
 
-                        if (coaname == "Other-Asset" && sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Interest")
-                        {
+                        //if (coaname == "Other-Asset" && sht.Cells[irow + 1 + j, 2].Value.ToString().Trim() == "Interest")
+                        //{
                            
-                            irow++;//ASSETS与LIABILITIES之间插入一行
-                        }
+                        //    irow++;//ASSETS与LIABILITIES之间插入一行
+                        //}
                         //sht.Row(irow).OutlineLevel=2;//设置大纲级别
                     }
                     for (int i = 0; i <= 36; i++)
@@ -390,6 +391,56 @@ namespace EARReport
                 shtES.Cells[21, 10].Value = "Up 400BP ";
                 shtES.Cells[21, 11].Value = "Flattener";
                 shtES.Cells[21, 12].Value = "Ramp Up";
+
+                shtES.Cells[12, 4].Value = 18138;
+                shtES.Cells[12, 5].Value = 19032;
+                shtES.Cells[12, 6].Value = 20507;
+                shtES.Cells[12, 7].Value = 22503;
+                shtES.Cells[12, 8].Value = 24569;
+                shtES.Cells[12, 9].Value = 26659;
+                shtES.Cells[12, 10].Value = 28697;
+                shtES.Cells[12, 11].Value = 26756;
+                shtES.Cells[12, 12].Value = 20998;
+
+                shtES.Cells[14, 4].Value = -11.55;
+                shtES.Cells[14, 5].Value = -7.19;
+                shtES.Cells[14, 6].Value = 0.00;
+                shtES.Cells[14, 7].Value = 9.73;
+                shtES.Cells[14, 8].Value = 19.81;
+                shtES.Cells[14, 9].Value = 30.00;
+                shtES.Cells[14, 10].Value =39.94;
+                shtES.Cells[14, 11].Value =30.47;
+                shtES.Cells[14, 12].Value =2.39;
+
+                shtES.Cells[24, 4].Value = -7.31;
+                shtES.Cells[24, 5].Value = -5.20;
+                shtES.Cells[24, 6].Value = 0.00;
+                shtES.Cells[24, 7].Value = 7.62;
+                shtES.Cells[24, 8].Value = 15.85;
+                shtES.Cells[24, 9].Value = 24.21;
+                shtES.Cells[24, 10].Value =32.35;
+                shtES.Cells[24, 11].Value =22.40;
+                shtES.Cells[24, 12].Value =4.27;
+
+
+                //ExcelChart excelChart = shtES.Drawings.add
+                ExcelChart chart = shtES.Drawings.AddChart("chart",eChartType.ColumnClustered);
+                ExcelChartSerie serie = chart.Series.Add(shtES.Cells[12,4,12,12],shtES.Cells[11,4,11,12]);
+
+                var chartType = chart.PlotArea.ChartTypes.Add(eChartType.LineStacked);
+                chartType.UseSecondaryAxis = true;
+                ExcelChartSerie chartSerie = chartType.Series.Add(shtES.Cells[14,2,14,12],shtES.Cells[11,4,11,12]);
+
+                var chartType2 = chart.PlotArea.ChartTypes.Add(eChartType.LineMarkers);
+                chartType2.UseSecondaryAxis = true;
+                ExcelChartSerie excelChartSerie = chartType2.Series.Add(shtES.Cells[24,2,24,12],shtES.Cells[11,4,11,12]);
+
+                chart.SetPosition(980,155);
+                serie.HeaderAddress = shtES.Cells[11,4];
+                chartSerie.HeaderAddress = shtES.Cells[11, 5];
+                excelChartSerie.HeaderAddress = shtES.Cells[11, 6];
+
+
                 //1st year projection
                 ExcelWorksheet sht1year = package.Workbook.Worksheets["1st year projection"];
                 sht1year.Cells.Style.Font.Name = "Calibri";
