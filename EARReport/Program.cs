@@ -431,9 +431,9 @@ namespace EARReport
                 chartType.UseSecondaryAxis = true;
                 ExcelChartSerie chartSerie = chartType.Series.Add(shtES.Cells[14,2,14,12],shtES.Cells[11,4,11,12]);
 
-                var chartType2 = chart.PlotArea.ChartTypes.Add(eChartType.LineMarkers);
-                chartType2.UseSecondaryAxis = true;
-                ExcelChartSerie excelChartSerie = chartType2.Series.Add(shtES.Cells[24,2,24,12],shtES.Cells[11,4,11,12]);
+                var charType2 = chart.PlotArea.ChartTypes.Add(eChartType.LineMarkers);
+                charType2.UseSecondaryAxis = true;
+                ExcelChartSerie excelChartSerie = charType2.Series.Add(shtES.Cells[24,2,24,12],shtES.Cells[11,4,11,12]);
 
                 chart.SetPosition(980,155);
                 serie.HeaderAddress = shtES.Cells[11,4];
