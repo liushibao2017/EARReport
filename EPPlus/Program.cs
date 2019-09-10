@@ -16,7 +16,7 @@ namespace EPPlus
     {
         static void Main(string[] args)
         {
-            FileInfo newFile = new FileInfo(@"test.xlsx");
+             FileInfo newFile = new FileInfo(@"test.xlsx");
             if (newFile.Exists)
             {
                 newFile.Delete();

@@ -183,7 +183,7 @@ namespace EARReport
         }
        
 
-        void PrepareSampleEaRLayoutSettings()
+        private void PrepareSampleEaRLayoutSettings()
         {
             EaRLayoutSetting asssets = new EaRLayoutSetting
             {
